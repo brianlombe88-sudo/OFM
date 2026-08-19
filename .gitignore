@@ -1,0 +1,13 @@
+# Node
+node_modules/
+
+# Environment files (keep local)
+BACKEND/.env
+FRONTEND/.env
+.env
+
+# Vite / build
+dist/
+
+# OS files
+.DS_Store
