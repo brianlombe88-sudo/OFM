@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --brand: #2f855a;
+}
+
+body{ @apply bg-gray-50 text-gray-900 antialiased }
+.app{ @apply max-w-4xl mx-6 my-6 bg-white rounded-lg shadow-md overflow-hidden }
+nav{ @apply bg-white px-4 py-3 border-b }
+main{ @apply p-6 }
+h1,h2{ @apply mb-3 }
+button{ @apply bg-brand text-white px-3 py-2 rounded }
+input,textarea,select{ @apply p-2 border rounded w-full mt-2 }
+.card{ @apply bg-white border p-3 rounded }
+.product-list li{ @apply list-none }
