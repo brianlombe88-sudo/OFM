@@ -14,6 +14,15 @@ const createProduct = async (req, res) => {
   }
 };
 
+const getMyProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ seller: req.user._id }).sort({ createdAt: -1 });
+    res.json({ products });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getProducts = async (req, res) => {
   try {
     const { q, category, minPrice, maxPrice, province, district, sellerType, page = 1, limit = 20 } = req.query;
@@ -105,6 +114,7 @@ const getCategories = async (req, res) => {
 
 module.exports = {
   createProduct,
+  getMyProducts,
   getProducts,
   getProduct,
   updateProduct,

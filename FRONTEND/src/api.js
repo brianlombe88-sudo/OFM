@@ -60,6 +60,13 @@ export async function getProduct(id) {
   return res.json();
 }
 
+export async function getMyProducts(token) {
+  const res = await fetch(`${API_URL}/api/products/mine`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  return res.json()
+}
+
 export async function createProduct(product, token) {
   const res = await fetch(`${API_URL}/api/products`, {
     method: 'POST',

@@ -7,7 +7,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+// Product photos are compressed in the browser and stored with the product.
+app.use(express.json({ limit: '3mb' }));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/farmmarket')
