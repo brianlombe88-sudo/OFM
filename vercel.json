@@ -1,6 +1,6 @@
 {
-  "installCommand": "npm --prefix FRONTEND ci",
-  "buildCommand": "npm --prefix FRONTEND run build",
+  "installCommand": "cd FRONTEND && npm ci",
+  "buildCommand": "cd FRONTEND && npm run build",
   "outputDirectory": "FRONTEND/dist",
   "rewrites": [
     {
