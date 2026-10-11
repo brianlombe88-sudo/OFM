@@ -39,7 +39,22 @@ export default function Nav() {
               </Link>
               {user && ['farmer', 'marketeer', 'admin'].includes(user.role) && (
                 <Link to="/seller-dashboard" className="hover:text-yellow-200 transition">
-                  Dashboard
+                  Seller Dashboard
+                </Link>
+              )}
+              {user && user.role === 'buyer' && (
+                <Link to="/buyer-dashboard" className="hover:text-yellow-200 transition">
+                  Buyer Dashboard
+                </Link>
+              )}
+              {user && user.role === 'transporter' && (
+                <Link to="/transporter-dashboard" className="hover:text-yellow-200 transition">
+                  Transporter Dashboard
+                </Link>
+              )}
+              {user && user.role === 'admin' && (
+                <Link to="/admin-dashboard" className="hover:text-yellow-200 transition">
+                  Admin Dashboard
                 </Link>
               )}
             </>
@@ -98,7 +113,7 @@ export default function Nav() {
                         className="block px-4 py-2 hover:bg-gray-100 text-sm"
                         onClick={() => setShowMenu(false)}
                       >
-                        Dashboard
+                        Seller Dashboard
                       </Link>
                       <Link
                         to="/add-product"
@@ -108,6 +123,33 @@ export default function Nav() {
                         Add Product
                       </Link>
                     </>
+                  )}
+                  {user?.role === 'buyer' && (
+                    <Link
+                      to="/buyer-dashboard"
+                      className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                      onClick={() => setShowMenu(false)}
+                    >
+                      Buyer Dashboard
+                    </Link>
+                  )}
+                  {user?.role === 'transporter' && (
+                    <Link
+                      to="/transporter-dashboard"
+                      className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                      onClick={() => setShowMenu(false)}
+                    >
+                      Transporter Dashboard
+                    </Link>
+                  )}
+                  {user?.role === 'admin' && (
+                    <Link
+                      to="/admin-dashboard"
+                      className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                      onClick={() => setShowMenu(false)}
+                    >
+                      Admin Dashboard
+                    </Link>
                   )}
 
                   <button
@@ -139,12 +181,27 @@ export default function Nav() {
             {user && ['farmer', 'marketeer', 'admin'].includes(user.role) && (
               <>
                 <Link to="/seller-dashboard" className="block py-2 hover:bg-green-600 px-2 rounded">
-                  Dashboard
+                  Seller Dashboard
                 </Link>
                 <Link to="/add-product" className="block py-2 hover:bg-green-600 px-2 rounded">
                   Sell
                 </Link>
               </>
+            )}
+            {user && user.role === 'buyer' && (
+              <Link to="/buyer-dashboard" className="block py-2 hover:bg-green-600 px-2 rounded">
+                Buyer Dashboard
+              </Link>
+            )}
+            {user && user.role === 'transporter' && (
+              <Link to="/transporter-dashboard" className="block py-2 hover:bg-green-600 px-2 rounded">
+                Transporter Dashboard
+              </Link>
+            )}
+            {user && user.role === 'admin' && (
+              <Link to="/admin-dashboard" className="block py-2 hover:bg-green-600 px-2 rounded">
+                Admin Dashboard
+              </Link>
             )}
           </>
         )}
