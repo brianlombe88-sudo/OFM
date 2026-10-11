@@ -6,7 +6,14 @@ export default function Nav() {
   const [showMenu, setShowMenu] = useState(false)
   
   const token = localStorage.getItem('fm_token')
-  const user = token ? JSON.parse(localStorage.getItem('fm_user') || '{}') : null
+  let user = null
+  if (token) {
+    try {
+      user = JSON.parse(localStorage.getItem('fm_user') || '{}')
+    } catch (error) {
+      user = null
+    }
+  }
 
   const handleLogout = () => {
     localStorage.removeItem('fm_token')

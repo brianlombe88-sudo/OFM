@@ -5,15 +5,46 @@ require('dotenv').config();
 
 const app = express();
 
+const fallbackLocalMongoUri = 'mongodb://localhost:27017/farmmarket';
+
+async function connectDatabase() {
+  const configuredUri = process.env.MONGODB_URI;
+
+  try {
+    if (!configuredUri) throw new Error('MONGODB_URI is not configured');
+    await mongoose.connect(configuredUri, { serverSelectionTimeoutMS: 5000 });
+    console.log('✅ MongoDB connected');
+  } catch (error) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('❌ MongoDB error:', error.message);
+      process.exit(1);
+    }
+
+    console.warn('⚠️ Configured MongoDB is unavailable, trying local MongoDB:', error.message);
+
+    try {
+      await mongoose.connect(fallbackLocalMongoUri, { serverSelectionTimeoutMS: 3000 });
+      console.log('✅ Local MongoDB connected');
+    } catch (localError) {
+      console.warn('⚠️ Local MongoDB is unavailable, starting an in-memory database:', localError.message);
+
+      try {
+        const { MongoMemoryServer } = require('mongodb-memory-server');
+        const memoryServer = await MongoMemoryServer.create();
+        await mongoose.connect(memoryServer.getUri());
+        console.log('✅ MongoDB connected using in-memory database');
+      } catch (memoryError) {
+        console.error('❌ MongoDB error:', memoryError.message);
+        process.exit(1);
+      }
+    }
+  }
+}
+
 // Middleware
 app.use(cors());
 // Product photos are compressed in the browser and stored with the product.
 app.use(express.json({ limit: '3mb' }));
-
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/farmmarket')
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB error:', err));
 
 // Routes
 app.get('/', (req, res) => {
@@ -31,6 +62,8 @@ app.use('/api/admin', require('./routes/admin'));
 // ==================== START SERVER ====================
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+connectDatabase().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
 });

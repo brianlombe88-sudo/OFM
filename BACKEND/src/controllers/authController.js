@@ -1,14 +1,34 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const validRoles = ['buyer', 'farmer', 'marketeer', 'transporter'];
+
+const normalizeRole = (role) => {
+  const nextRole = String(role || 'buyer').trim().toLowerCase();
+  return validRoles.includes(nextRole) ? nextRole : 'buyer';
+};
+
 const register = async (req, res) => {
   try {
     const { name, email, phone, password, role, location } = req.body;
+
+    if (!name || !email || !phone || !password) {
+      return res.status(400).json({ message: 'Name, email, phone and password are required' });
+    }
+
+    const safeRole = normalizeRole(role);
     
     const existing = await User.findOne({ email });
     if (existing) return res.status(400).json({ message: 'Email already registered' });
     
-    const user = await User.create({ name, email, phone, password, role, location });
+    const user = await User.create({
+      name,
+      email,
+      phone,
+      password,
+      role: safeRole,
+      location
+    });
     
     const token = jwt.sign(
       { id: user._id }, 

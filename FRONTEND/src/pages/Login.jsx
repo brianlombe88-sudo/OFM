@@ -2,6 +2,14 @@ import React, { useState } from 'react'
 import { login } from '../api'
 import { useNavigate } from 'react-router-dom'
 
+const dashboardForRole = {
+  buyer: '/buyer-dashboard',
+  farmer: '/seller-dashboard',
+  marketeer: '/seller-dashboard',
+  transporter: '/transporter-dashboard',
+  admin: '/admin-dashboard'
+}
+
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -13,7 +21,8 @@ export default function Login() {
     const res = await login({ email, password })
     if (res.token) {
       localStorage.setItem('fm_token', res.token)
-      nav('/')
+      localStorage.setItem('fm_user', JSON.stringify(res.user))
+      nav(dashboardForRole[res.user?.role] || '/')
     } else {
       setError(res.message || 'Login failed')
     }
