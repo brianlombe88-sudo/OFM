@@ -1,0 +1,11 @@
+{
+  "installCommand": "npm --prefix FRONTEND ci",
+  "buildCommand": "npm --prefix FRONTEND run build",
+  "outputDirectory": "FRONTEND/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
